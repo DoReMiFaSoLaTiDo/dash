@@ -47,6 +47,7 @@ group :development do
 end
 
 group :test do
+  gem 'ffaker'
   gem 'factory_girl_rails'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
