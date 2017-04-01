@@ -4,6 +4,6 @@ FactoryGirl.define do
   factory :review do
     doctor FactoryGirl.build(:doctor)
     description FFaker::Lorem.sentence
-    ratings { rand() * 5 }
+    ratings { rand(1..5) }
   end
 end

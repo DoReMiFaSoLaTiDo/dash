@@ -23,5 +23,20 @@ RSpec.describe Review, type: :model do
     end
   end
 
+  context "with no associated doctor" do
+    before(:each) do
+      @doctor = FactoryGirl.create(:doctor)
+      5.times {FactoryGirl.create(:review, doctor: @doctor)}
+    end
+
+    it "destroys associated review when doctor is deleted" do
+      reviews = @doctor.reviews
+      @doctor.destroy
+      reviews.each do |review|
+        expect(Review.find(review)).to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
 
 end
