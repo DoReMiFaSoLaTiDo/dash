@@ -86,9 +86,20 @@ describe DoctorsController do
         expect(result[:last_name]).to include "can't be blank"
       end
 
-      it "returns response status 422" do
+      it "returns response error status 422" do
         expect(response.status).to eql 422
       end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @doctor = FactoryGirl.create(:doctor)
+      delete :destroy, { id: @doctor.id }, format: :json
+    end
+
+    it "returns response success status 204" do
+      expect(response.status).to eql 204
     end
   end
 end

@@ -1,5 +1,5 @@
 class DoctorsController < ApplicationController
-  before_filter :set_doctor, only: [:show, :update ]
+  before_filter :set_doctor, only: [:show, :update, :destroy ]
 
   def index
     @doctors = Doctor.all#includes(:reviews).all
@@ -29,6 +29,10 @@ class DoctorsController < ApplicationController
     end
   end
 
+  def destroy
+    @doctor.destroy
+    head 204
+  end
 
   private
     def approved_params
