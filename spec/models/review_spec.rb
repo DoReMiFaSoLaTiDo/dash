@@ -3,6 +3,7 @@ require 'ffaker'
 
 RSpec.describe Review, type: :model do
   before(:each) do
+    @doctor =  FactoryGirl.create(:doctor)
     @review = FactoryGirl.create(:review, doctor: @doctor)
   end
 
@@ -21,12 +22,19 @@ RSpec.describe Review, type: :model do
     it "is not valid with ratings less than 1" do
       expect( FactoryGirl.build(:review, doctor: @doctor, ratings: 0) ).to_not be_valid
     end
+
+    it "is not valid with no associated doctor or invalid doctor" do
+      @doctor = nil
+      @review = FactoryGirl.build(:review, doctor: @doctor)
+      expect(@review).to_not be_valid
+    end
   end
 
-  context "with no associated doctor" do
+
+  context "when associated doctor no longer exists" do
     before(:each) do
       @doctor = FactoryGirl.create(:doctor)
-      5.times {FactoryGirl.create(:review, doctor: @doctor)}
+      5.times { FactoryGirl.create(:review, doctor: @doctor) }
     end
 
     it "destroys associated review when doctor is deleted" do

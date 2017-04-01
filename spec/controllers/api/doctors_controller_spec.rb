@@ -21,6 +21,22 @@ describe Api::DoctorsController do
     end
   end
 
+  describe "GET #index" do
+    before(:each) do
+      5.times { FactoryGirl.create(:doctor) }
+      get :index
+    end
+
+    it "returns success status code" do
+      expect(response.status).to eql 200
+    end
+
+    it "returns 5 records" do
+      result = parsed_response
+      expect(result.size).to eql(5)
+    end
+  end
+
   describe "POST #create" do
     before(:each) do
       @doctor = FactoryGirl.attributes_for :doctor

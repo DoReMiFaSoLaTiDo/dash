@@ -3,4 +3,6 @@ class Review < ActiveRecord::Base
 
   validates :description, presence: true
   validates :ratings, inclusion: { in: 1..5 }
+  validates :doctor, presence: true
+  # delegate
 end
