@@ -12,7 +12,7 @@ describe DoctorsController do
 
     it "returns information about doctor and associated reviews" do
       result = JSON.parse(response.body, symbolize_names: true)
-      expect(result[:name]).to eql @doctor[:name]
+      expect(result[:name]).to eql @doctor.name
     end
 
     it "returns 200 success status" do
@@ -32,7 +32,7 @@ describe DoctorsController do
 
       it "returns record created" do
         result = JSON.parse(response.body, symbolize_names: true)
-        expect(result[:name]).to eql @doctor[:name]
+        expect(result[:name]).to eql Doctor.new(@doctor).name
       end
 
       it "returns response status 200" do
@@ -42,7 +42,7 @@ describe DoctorsController do
 
     context "with invalid attributes" do
       before(:each) do
-        @doctor = @doctor.tap { |doc| doc[:name] = nil }
+        @doctor = @doctor.tap { |doc| doc[:first_name] = nil }
         post :create, { doctor: @doctor }, format: :json
       end
 

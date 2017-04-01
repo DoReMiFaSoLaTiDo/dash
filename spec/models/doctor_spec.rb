@@ -8,8 +8,12 @@ describe Doctor do
   it { should be_valid }
   it { should respond_to :name }
 
-  it "is not valid without a name" do
-    expect( FactoryGirl.build(:doctor, name: nil) ).to_not be_valid
+  it "is not valid without a first_name" do
+    expect( FactoryGirl.build(:doctor, first_name: nil) ).to_not be_valid
   end
-  
+
+  it "is not valid without a last_name" do
+    expect( FactoryGirl.build(:doctor, last_name: nil) ).to_not be_valid
+  end
+
 end

@@ -3,7 +3,7 @@ require 'ffaker'
 
 RSpec.describe Review, type: :model do
   before(:each) do
-    @doctor = Doctor.create!(name: FFaker::Name.name )
+    @doctor = FactoryGirl.create(:doctor) 
   end
   it "has valid factory" do
     expect( FactoryGirl.create(:review, doctor: @doctor) ).to be_valid

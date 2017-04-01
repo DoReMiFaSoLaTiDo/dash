@@ -2,6 +2,7 @@ require 'ffaker'
 
 FactoryGirl.define do
   factory :doctor do
-    name {FFaker::Name.name }
+    first_name { FFaker::Name.first_name }
+    last_name { FFaker::Name.last_name }
   end
 end

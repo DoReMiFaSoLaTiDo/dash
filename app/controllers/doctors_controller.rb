@@ -3,10 +3,11 @@ class DoctorsController < ApplicationController
 
   def index
     @doctors = Doctor.all#includes(:reviews).all
+    render json: @doctors
   end
 
   def show
-    render json: @doctor.to_json
+    render json: @doctor
     #render json: @doctor.as_json
   end
 
@@ -24,7 +25,7 @@ class DoctorsController < ApplicationController
 
   private
     def approved_params
-      params.require(:doctor).permit(:name)
+      params.require(:doctor).permit(:first_name, :last_name, :title)
     end
 
     def set_doctor
