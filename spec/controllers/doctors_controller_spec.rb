@@ -50,12 +50,45 @@ describe DoctorsController do
         expect(response.status).to eql 422
       end
 
-      # it "returns errors" do
-      #   result = JSON.parse(response.body, symbolize_names: true)
-      #   raise response.inspect #expect(result).to have_key :errors
-      #   expect(result[:errors][:name]).to include "can't be blank"
-      # end
+      it "returns errors" do
+        result = JSON.parse(response.body, symbolize_names: true)
+        expect(result[:first_name]).to include "can't be blank"
+      end
+    end
+  end
+
+  describe "PUT/PATCH #update" do
+
+    context "update with valid attributes" do
+      before(:each) do
+        @doctor = FactoryGirl.create(:doctor)
+        patch :update, { id: @doctor.id, doctor: { last_name: "Stefanik007" } }, format: :json
+      end
+
+      it "returns updated doctor details" do
+        result = JSON.parse(response.body, symbolize_names: true)
+        expect(result[:name]).to include "Stefanik007"
+      end
+
+      it "returns response status 200" do
+        expect(response.status).to eql 200
+      end
     end
 
+    context "update with invalid attributes" do
+      before(:each) do
+        @doctor = FactoryGirl.create(:doctor)
+        patch :update, { id: @doctor.id, doctor: { last_name: "" } }, format: :json
+      end
+
+      it "returns errors" do
+        result = JSON.parse(response.body, symbolize_names: true)
+        expect(result[:last_name]).to include "can't be blank"
+      end
+
+      it "returns response status 422" do
+        expect(response.status).to eql 422
+      end
+    end
   end
 end

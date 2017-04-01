@@ -1,5 +1,5 @@
 class DoctorsController < ApplicationController
-  before_filter :set_doctor, only: [:edit, :show]
+  before_filter :set_doctor, only: [:show, :update ]
 
   def index
     @doctors = Doctor.all#includes(:reviews).all
@@ -8,7 +8,6 @@ class DoctorsController < ApplicationController
 
   def show
     render json: @doctor
-    #render json: @doctor.as_json
   end
 
   def create
@@ -20,6 +19,14 @@ class DoctorsController < ApplicationController
       render json: @doctor.errors, status: :unprocessable_entity
     end
 
+  end
+
+  def update
+    if @doctor.update(approved_params)
+      render json: @doctor, status: 200
+    else
+      render json: @doctor.errors, status: :unprocessable_entity
+    end
   end
 
 
