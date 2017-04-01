@@ -1,17 +1,18 @@
 require 'rails_helper'
 require 'ffaker'
 
-describe DoctorsController do
-  before(:each) { request.headers['Accept'] = "application"}
+describe Api::DoctorsController do
+  before(:each) { request.headers['Accept'] = "application #{Mime::JSON}"}
+  before(:each) { request.headers['Content-Type'] = Mime::JSON.to_s }
 
   describe "GET #show" do
     before(:each) do
       @doctor = FactoryGirl.create(:doctor)
-      get :show, id: @doctor.id, format: :json
+      get :show, id: @doctor.id
     end
 
     it "returns information about doctor and associated reviews" do
-      result = JSON.parse(response.body, symbolize_names: true)
+      result = parsed_response
       expect(result[:name]).to eql @doctor.name
     end
 
@@ -27,11 +28,11 @@ describe DoctorsController do
 
     context "with valid attributes" do
       before(:each) do
-        post :create, { doctor: @doctor }, format: :json
+        post :create, { doctor: @doctor }
       end
 
       it "returns record created" do
-        result = JSON.parse(response.body, symbolize_names: true)
+        result = parsed_response
         expect(result[:name]).to eql Doctor.new(@doctor).name
       end
 
@@ -43,7 +44,7 @@ describe DoctorsController do
     context "with invalid attributes" do
       before(:each) do
         @doctor = @doctor.tap { |doc| doc[:first_name] = nil }
-        post :create, { doctor: @doctor }, format: :json
+        post :create, { doctor: @doctor }
       end
 
       it "returns response status 422" do
@@ -51,7 +52,7 @@ describe DoctorsController do
       end
 
       it "returns errors" do
-        result = JSON.parse(response.body, symbolize_names: true)
+        result = parsed_response
         expect(result[:first_name]).to include "can't be blank"
       end
     end
@@ -62,11 +63,11 @@ describe DoctorsController do
     context "update with valid attributes" do
       before(:each) do
         @doctor = FactoryGirl.create(:doctor)
-        patch :update, { id: @doctor.id, doctor: { last_name: "Stefanik007" } }, format: :json
+        patch :update, { id: @doctor.id, doctor: { last_name: "Stefanik007" } }
       end
 
       it "returns updated doctor details" do
-        result = JSON.parse(response.body, symbolize_names: true)
+        result = parsed_response
         expect(result[:name]).to include "Stefanik007"
       end
 
@@ -78,11 +79,11 @@ describe DoctorsController do
     context "update with invalid attributes" do
       before(:each) do
         @doctor = FactoryGirl.create(:doctor)
-        patch :update, { id: @doctor.id, doctor: { last_name: "" } }, format: :json
+        patch :update, { id: @doctor.id, doctor: { last_name: "" } }
       end
 
       it "returns errors" do
-        result = JSON.parse(response.body, symbolize_names: true)
+        result = parsed_response
         expect(result[:last_name]).to include "can't be blank"
       end
 
@@ -95,7 +96,7 @@ describe DoctorsController do
   describe "DELETE #destroy" do
     before(:each) do
       @doctor = FactoryGirl.create(:doctor)
-      delete :destroy, { id: @doctor.id }, format: :json
+      delete :destroy, { id: @doctor.id }
     end
 
     it "returns response success status 204" do

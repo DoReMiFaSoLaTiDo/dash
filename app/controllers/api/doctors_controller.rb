@@ -1,4 +1,4 @@
-class DoctorsController < ApplicationController
+class Api::DoctorsController < ApplicationController
   before_filter :set_doctor, only: [:show, :update, :destroy ]
 
   def index
