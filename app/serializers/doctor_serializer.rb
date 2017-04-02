@@ -1,5 +1,5 @@
 class DoctorSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :name, :id
 
   has_many :reviews
 

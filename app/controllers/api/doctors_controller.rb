@@ -1,4 +1,6 @@
 class Api::DoctorsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, :with => :render_404
+
   before_filter :set_doctor, only: [:show, :update, :destroy ]
 
   def index
@@ -40,7 +42,11 @@ class Api::DoctorsController < ApplicationController
     end
 
     def set_doctor
-      @doctor = Doctor.find(params[:id])#.includes(:reviews)
+      @doctor = Doctor.find(params[:id])
+    end
+
+    def render_404
+      render json: { error: "Record Not Found", status: 404 }
     end
 
 end

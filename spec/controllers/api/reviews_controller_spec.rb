@@ -74,7 +74,7 @@ describe Api::ReviewsController do
     context "with invalid attributes" do
       before(:each) do
         @doctor = FactoryGirl.create(:doctor)
-        @review_attribs = FactoryGirl.attributes_for :review
+        @review_attribs = FactoryGirl.attributes_for :fake_review
         post :create, { doctor_id: @doctor.id, review: @review_attribs }
       end
 
@@ -84,7 +84,7 @@ describe Api::ReviewsController do
 
       it "returns errors" do
         result = parsed_response
-        expect(result[:doctor]).to include "can't be blank"
+        expect(result[:description]).to include "can't be blank"
         expect(result[:id]).to be_nil
       end
     end
