@@ -129,4 +129,16 @@ describe Api::ReviewsController do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @doctor = FactoryGirl.create :doctor
+      @review = FactoryGirl.create :review, doctor: @doctor
+      delete :destroy, { doctor_id: @doctor.id, id: @review.id }
+    end
+
+    it "returns success status code 204" do
+      expect(response.status).to eql 204
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class Api::ReviewsController < ApplicationController
-  before_filter :set_review, only: [:show, :update, :delete]
+  before_filter :set_review, only: [:show, :update, :destroy]
 
   def show
     render json: @review
@@ -25,6 +25,11 @@ class Api::ReviewsController < ApplicationController
     else
       render json: @review.errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @review.destroy
+    head 204
   end
 
 
