@@ -7,6 +7,8 @@ describe Doctor do
 
   it { should be_valid }
   it { should respond_to :name }
+  it { should respond_to :first_name }
+  it { should respond_to :last_name }
 
   it "is not valid without a first_name" do
     expect( FactoryGirl.build(:doctor, first_name: nil) ).to_not be_valid
