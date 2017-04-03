@@ -2,7 +2,7 @@ class Api::ReviewsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   before_filter :set_review, only: [:show, :update, :destroy]
-  before_filter :set_doctor, only: [:index, :create]
+  before_filter :set_doctor, only: [:index, :create, :destroy]
 
   def show
     render json: @review
@@ -31,8 +31,12 @@ class Api::ReviewsController < ApplicationController
   end
 
   def destroy
-    @review.destroy
-    head 204
+    if @doctor.reviews.include? @review
+      @review.destroy
+      head 204
+    else
+      raise ActiveRecord::RecordNotFound
+    end
   end
 
 

@@ -132,14 +132,31 @@ describe Api::ReviewsController do
   end
 
   describe "DELETE #destroy" do
-    before(:each) do
-      @doctor = FactoryGirl.create :doctor
-      @review = FactoryGirl.create :review, doctor: @doctor
-      delete :destroy, { doctor_id: @doctor.id, id: @review.id }
+    context "with valid parameters" do
+      before(:each) do
+        @doctor = FactoryGirl.create :doctor
+        @review = FactoryGirl.create :review, doctor: @doctor
+        delete :destroy, { doctor_id: @doctor.id, id: @review.id }
+      end
+
+      it "returns success status code 204" do
+        expect(response.status).to eql 204
+      end
     end
 
-    it "returns success status code 204" do
-      expect(response.status).to eql 204
+    context "with invalid parameters" do
+      before(:each) do
+        @doctor = FactoryGirl.create :doctor
+        @review = FactoryGirl.create :review, doctor: @doctor
+        @wrong_doctor = FactoryGirl.create :doctor
+        delete :destroy, { doctor_id: @wrong_doctor.id, id: @review.id }
+      end
+
+      it "returns error for record not found with status code 404" do
+        result = parsed_response
+        expect(result[:status]).to eql 404
+      end
     end
+
   end
 end
