@@ -36,8 +36,10 @@ describe Api::ReviewsController do
   describe "GET #index" do
     before(:each) do
       @doctor = FactoryGirl.create(:doctor)
-      5.times { FactoryGirl.create(:review, doctor: @doctor) }
-      get :index
+      review_attribs = FactoryGirl.attributes_for :review
+      review_attribs.tap { |rev| rev[:doctor_id] = @doctor.id }
+      5.times { Review.create(review_attribs) }
+      get :index, { doctor_id: @doctor }
     end
 
     it "returns success status code" do
@@ -46,7 +48,6 @@ describe Api::ReviewsController do
 
     it "returns 5 records" do
       result = parsed_response
-      # raise result.inspect
       expect(result.size).to eql(5)
     end
   end

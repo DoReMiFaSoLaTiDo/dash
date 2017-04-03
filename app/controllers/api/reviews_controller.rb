@@ -2,14 +2,14 @@ class Api::ReviewsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   before_filter :set_review, only: [:show, :update, :destroy]
-  before_filter :set_doctor, only: [:create]
+  before_filter :set_doctor, only: [:index, :create]
 
   def show
     render json: @review
   end
 
   def index
-    render json: Review.all
+    render json: @doctor.reviews.all
   end
 
   def create
@@ -42,7 +42,7 @@ class Api::ReviewsController < ApplicationController
     end
 
     def approved_params
-      params.require(:review).permit(:description, :ratings, :reviewer, :doctor_id)
+      params.require(:review).permit(:id, :description, :ratings, :reviewer, :doctor_id)
     end
 
     def set_doctor

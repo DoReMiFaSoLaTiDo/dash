@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json }, path: '/' do
     resources :doctors, constraints: { format: 'json' } do
-      resources :reviews, only: [:create, :update, :destroy, :show]
+      resources :reviews, only: [:index, :create, :update, :destroy, :show]
     end
-    resources :reviews, constraints: { format: 'json' }, only: [:index]
   end
 
 end
