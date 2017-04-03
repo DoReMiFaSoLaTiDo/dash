@@ -129,6 +129,20 @@ describe Api::ReviewsController do
         expect(result[:description]).to include "can't be blank"
       end
     end
+
+    context "with wrong doctor associated" do
+      before(:each) do
+        @wrong_doctor = FactoryGirl.create :doctor
+        patch :update, { doctor_id: @wrong_doctor.id, id: @review.id,
+          review: { description: "blah blah blah" } }
+      end
+
+      it "returns error code 404" do
+        result = parsed_response
+        expect(result[:status]).to eql 404
+      end
+
+    end
   end
 
   describe "DELETE #destroy" do

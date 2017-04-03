@@ -2,7 +2,7 @@ class Api::ReviewsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   before_filter :set_review, only: [:show, :update, :destroy]
-  before_filter :set_doctor, only: [:index, :create, :destroy]
+  before_filter :set_doctor, only: [:index, :create, :update, :destroy]
 
   def show
     render json: @review
@@ -23,6 +23,7 @@ class Api::ReviewsController < ApplicationController
   end
 
   def update
+    raise ActiveRecord::RecordNotFound unless @doctor.reviews.include? @review
     if @review.update(approved_params)
       render json: @review, status: 200
     else
